@@ -22,6 +22,21 @@ public class ProductController : Controller
 
     }
 
+
+
+    [HttpGet]
+    [Route("GetAll")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult<IEnumerable<Product>> GetAll()
+    {
+        List<Product> list = new ProductRepository().Get();
+
+        return list?.Count > 0 ? StatusCode(StatusCodes.Status200OK, list) : StatusCode(StatusCodes.Status404NotFound, "No Product Found");
+
+
+    }
+
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
