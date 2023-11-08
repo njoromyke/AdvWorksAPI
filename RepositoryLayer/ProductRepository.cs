@@ -1,11 +1,12 @@
 ﻿using AdvWorksAPI.EntityLayer;
+using AdvWorksAPI.Interfaces;
 
 namespace AdvWorksAPI.RepositoryLayer;
 
 /// <summary>
 /// Class to work with Product data
 /// </summary>
-public class ProductRepository
+public class ProductRepository : IRepository<Product>
 {
     #region Get Method
     /// <summary>
