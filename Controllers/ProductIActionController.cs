@@ -25,5 +25,21 @@ namespace AdvWorksAPI.Controllers;
             return ret;
          
         }
+
+        [HttpGet("{id}")]
+
+        public IActionResult Get(int id)
+        {
+            IActionResult ret;
+
+            var entity = new ProductRepository().Get(id);
+
+
+            ret = entity != null ? StatusCode(StatusCodes.Status200OK, entity) : StatusCode(StatusCodes.Status404NotFound, $"Cannot find product with id {id}");
+            
+            return ret;
+
+        }
+
     }
 
