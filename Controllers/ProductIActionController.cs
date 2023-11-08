@@ -11,7 +11,9 @@ namespace AdvWorksAPI.Controllers;
     {
 
     [HttpGet]
-        public IActionResult Get()
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public IActionResult Get()
         {
             IActionResult ret;
             List<Product> list;
@@ -27,6 +29,8 @@ namespace AdvWorksAPI.Controllers;
         }
 
         [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
 
         public IActionResult Get(int id)
         {
@@ -35,7 +39,7 @@ namespace AdvWorksAPI.Controllers;
             var entity = new ProductRepository().Get(id);
 
 
-            ret = entity != null ? StatusCode(StatusCodes.Status200OK, entity) : StatusCode(StatusCodes.Status404NotFound, $"Cannot find product with id {id}");
+            ret = entity != null ? Ok(entity) : NotFound($"Cannot find product with id {id}");
             
             return ret;
 
