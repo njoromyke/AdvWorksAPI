@@ -9,9 +9,6 @@ namespace AdvWorksAPI.Controllers;
 public class ProductController : Controller
 {
     [HttpGet]
-    [Route("")]
-    [Route("GetAll")]
-    [Route("GetAllProducts")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public ActionResult<IEnumerable<Product>> Get()
@@ -23,13 +20,36 @@ public class ProductController : Controller
             : StatusCode(StatusCodes.Status404NotFound, "No Product Found");
     }
 
-    [HttpGet("{id}")]
+
+    [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Route("ByCategory/{categoryId}")]
+    public ActionResult<IEnumerable<Product>> SearchByCategory(int categoryId)
+    {
+        Console.WriteLine(categoryId.ToString());
+
+        return StatusCode(StatusCodes.Status200OK);
+    }
+
+    [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)] 
     public ActionResult<Product?> Get(int id)
     {
         var entity = new ProductRepository().Get(id);
 
         return entity != null ? Ok(entity) : NotFound($"Cannot find product with id {id}");
     }
+
+    [HttpGet]
+
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Route("SearchByNameAndPrice")]
+    public ActionResult<IEnumerable<Product>> SearchByNameAndPrice(string name, decimal listpPrice)
+    {
+        return StatusCode(StatusCodes.Status200OK);
+    }
+
 }
