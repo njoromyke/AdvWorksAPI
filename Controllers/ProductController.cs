@@ -47,7 +47,7 @@ public class ProductController : Controller
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Route("SearchByNameAndPrice")]
-    public ActionResult<IEnumerable<Product>> SearchByNameAndPrice(string name, decimal listpPrice)
+    public ActionResult<IEnumerable<Product>> SearchByNameAndPrice(string name, decimal listPrice)
     {
         return StatusCode(StatusCodes.Status200OK);
     }
