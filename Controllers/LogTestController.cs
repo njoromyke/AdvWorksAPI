@@ -23,7 +23,7 @@ public class LogTestController : ControllerBase
         {
             WriteLogMessages();
 
-            return "Check your Console Window";
+            return "Check your Console Window or the Log File";
         }
 
         private void WriteLogMessages()
