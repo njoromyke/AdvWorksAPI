@@ -37,15 +37,7 @@ if (app.Environment.IsDevelopment())
 }
 
 
-if(app.Environment.IsDevelopment())
-    app.UseExceptionHandler("/DevelopmentError");
-
-else
-{
-
-    app.UseExceptionHandler("ProductionError");
-}
-
+app.UseExceptionHandler(app.Environment.IsDevelopment() ? "/DevelopmentError" : "/ProductionError");
 
 
 app.UseAuthorization();
