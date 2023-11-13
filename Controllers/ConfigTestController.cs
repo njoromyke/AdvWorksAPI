@@ -18,7 +18,23 @@ public class ConfigTestController : ControllerBaseApi
 
     [HttpGet]
     [Route("IConfigurationTest")]
+    public string ConfigurationTest()
+    {
+        return _config["AdvWorksAPI:InfoMessageDefault"] ?? string.Empty;
+    }
     [HttpGet]
+    [Route("AssignToClass")]
+    public AdvWorksApiDefaults? AssignToClass()
+    {
+        AdvWorksApiDefaults? settings = _config.GetRequiredSection("AdvWorksAPI").Get<AdvWorksApiDefaults>();
+
+        return settings;
+
+
+    }
+
+
+[HttpGet]
     [Route("SetProperties")]
     public AdvWorksApiDefaults SetProperties()
     {
@@ -27,7 +43,7 @@ public class ConfigTestController : ControllerBaseApi
             {
                 InfoMessageDefault = _config["AdvWorksAPI:InfoMessageDefault"] ?? string.Empty,
                 ProductCategoryID = Convert.ToInt32(_config["AdvWorksAPI:ProductCategoryID"]),
-                ProductModelID = Convert.ToInt32(_config["AdvWorksAPI:ProductModelID"])
+                ProductModelID = Convert.ToInt32(_config["AdvWorksAPI:ProductModelID"]),
             };
 
         return settings;
