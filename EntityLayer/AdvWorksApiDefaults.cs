@@ -8,11 +8,13 @@ namespace AdvWorksAPI.EntityLayer
         {
             Created= DateTime.Now;
             ProductCategoryID = 1;
+            InfoMessageDefault = string.Empty;
             ProductModelID = 2;
 
         }
 
         public DateTime Created { get; set; }   
+        public string InfoMessageDefault { get; set; }
         public int ProductCategoryID { get; set; }
         public int ProductModelID {get; set; }
     }

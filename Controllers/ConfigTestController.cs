@@ -1,4 +1,5 @@
 ﻿using AdvWorksAPI.BaseController;
+using AdvWorksAPI.EntityLayer;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdvWorksAPI.Controllers;
@@ -17,8 +18,18 @@ public class ConfigTestController : ControllerBaseApi
 
     [HttpGet]
     [Route("IConfigurationTest")]
-    public string ConfigurationTest()
+    [HttpGet]
+    [Route("SetProperties")]
+    public AdvWorksApiDefaults SetProperties()
     {
-        return _config["AdvWorksAPI:InfoMessageDefault"] ?? string.Empty;
+        AdvWorksApiDefaults settings =
+            new()
+            {
+                InfoMessageDefault = _config["AdvWorksAPI:InfoMessageDefault"] ?? string.Empty,
+                ProductCategoryID = Convert.ToInt32(_config["AdvWorksAPI:ProductCategoryID"]),
+                ProductModelID = Convert.ToInt32(_config["AdvWorksAPI:ProductModelID"])
+            };
+
+        return settings;
     }
 }
