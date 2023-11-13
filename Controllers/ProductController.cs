@@ -10,23 +10,47 @@ namespace AdvWorksAPI.Controllers;
 public class ProductController : Controller
 {
     private readonly IRepository<Product> _repo;
-    public ProductController(IRepository<Product> repo)
+    private readonly ILogger<ProductController> _logger;
+
+    public ProductController(IRepository<Product> repo, ILogger<ProductController> logger)
     {
         _repo = repo;
+        _logger = logger;
     }
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<IEnumerable<Product>> Get()
     {
+        ActionResult<IEnumerable<Product>> ret;
         List<Product> list = _repo.Get();
+        string msg = "No Products are available";
 
-        throw new ApplicationException("ERROR!"); 
+        try
+        {
+            throw new ApplicationException("ERROR!");
 
-        return list?.Count > 0
-            ? StatusCode(StatusCodes.Status200OK, list)
-            : StatusCode(StatusCodes.Status404NotFound, "No Product Found");
+            return list?.Count > 0
+                ? StatusCode(StatusCodes.Status200OK, list)
+                : StatusCode(StatusCodes.Status404NotFound, "No Product Found");
+        }
+        catch (Exception e)
+        {
+            msg = "Error in ProductController.Get()";
+            msg += $"{Environment.NewLine} Message: {e.Message}";
+            msg += $"{Environment.NewLine} Source: {e.Source}";
+
+            _logger.LogError(e, "{msg}", msg);
+
+            ret = StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new ApplicationException("Error in Product API. ")
+            );
+        }
+
+        return ret;
     }
 
     [HttpGet]
