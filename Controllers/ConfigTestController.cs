@@ -9,11 +9,24 @@ namespace AdvWorksAPI.Controllers;
 public class ConfigTestController : ControllerBaseApi
 {
     private readonly IConfiguration _config;
+    private readonly AdvWorksApiDefaults _settings;
 
-    public ConfigTestController(ILogger<ConfigTestController> logger, IConfiguration config)
+    public ConfigTestController(ILogger<ConfigTestController> logger, IConfiguration config, AdvWorksApiDefaults settings)
         : base(logger)
     {
         _config = config;
+        _settings = settings;
+    }
+
+    [HttpGet]
+    [Route("InjectDefaults")]
+
+    public AdvWorksApiDefaults InjectDefaults()
+    {
+        _settings.InfoMessageDefault = _settings.InfoMessageDefault.Replace("{Verb}", "GET")
+            .Replace("{ClassName}", "Product");
+
+        return _settings;
     }
 
     [HttpGet]

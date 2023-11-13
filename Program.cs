@@ -11,7 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 //builder.Services.AddScoped<AdvWorksApiDefaults, AdvWorksApiDefaults>();
 builder.Services.AddSingleton<AdvWorksApiDefaults, AdvWorksApiDefaults>();
+AdvWorksApiDefaults settings = new();
+builder.Configuration.GetSection("AdvWorksAPI").Bind(settings);
+builder.Services.AddSingleton<AdvWorksApiDefaults>(settings);
+
 builder.Services.AddScoped<IRepository<Product>, ProductRepository>();
+
 
 //Configure Logging to Console
 
