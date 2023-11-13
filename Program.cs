@@ -37,9 +37,14 @@ if (app.Environment.IsDevelopment())
 }
 
 
+if(app.Environment.IsDevelopment())
+    app.UseExceptionHandler("/DevelopmentError");
 
-//Enable Exception Handling Middleware
-app.UseExceptionHandler("/ProductionError");
+else
+{
+
+    app.UseExceptionHandler("ProductionError");
+}
 
 
 
