@@ -22,6 +22,8 @@ public class ProductController : Controller
     {
         List<Product> list = _repo.Get();
 
+        throw new ApplicationException("ERROR!"); 
+
         return list?.Count > 0
             ? StatusCode(StatusCodes.Status200OK, list)
             : StatusCode(StatusCodes.Status404NotFound, "No Product Found");
