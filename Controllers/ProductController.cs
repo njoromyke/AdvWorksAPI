@@ -1,4 +1,5 @@
-﻿using AdvWorksAPI.EntityLayer;
+﻿using AdvWorksAPI.BaseController;
+using AdvWorksAPI.EntityLayer;
 using AdvWorksAPI.Interfaces;
 using AdvWorksAPI.RepositoryLayer;
 using Microsoft.AspNetCore.Mvc;
@@ -7,15 +8,13 @@ namespace AdvWorksAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ProductController : Controller
+public class ProductController : ControllerBaseApi
 {
     private readonly IRepository<Product> _repo;
-    private readonly ILogger<ProductController> _logger;
 
-    public ProductController(IRepository<Product> repo, ILogger<ProductController> logger)
+    public ProductController(IRepository<Product> repo, ILogger<ProductController> logger) : base(logger)
     {
         _repo = repo;
-        _logger = logger;
     }
 
     [HttpGet]
@@ -42,7 +41,7 @@ public class ProductController : Controller
             msg += $"{Environment.NewLine} Message: {e.Message}";
             msg += $"{Environment.NewLine} Source: {e.Source}";
 
-            _logger.LogError(e, "{msg}", msg);
+            Logger.LogError(e, "{msg}", msg);
 
             ret = StatusCode(
                 StatusCodes.Status500InternalServerError,

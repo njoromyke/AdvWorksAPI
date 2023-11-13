@@ -1,18 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AdvWorksAPI.BaseController;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AdvWorksAPI.Controllers;
 
 
 [Route("api/[controller]")]
 [ApiController]
-public class LogTestController : ControllerBase
+public class LogTestController : ControllerBaseApi
 {
 
-    private readonly ILogger<LogTestController> _logger;
 
-        public LogTestController (ILogger<LogTestController> logger)
+        public LogTestController (ILogger<LogTestController> logger) : base (logger)
         {
-            _logger = logger;
           
         }
 
@@ -28,13 +27,13 @@ public class LogTestController : ControllerBase
 
         private void WriteLogMessages()
         {
-            _logger.LogTrace("This is a log entry");
-            _logger.LogDebug("This is a debug log entry");
-            _logger.LogInformation("This is an information log entry");
-            _logger.LogWarning("This is a warning log entry");
-            _logger.LogError("This is an error log entry");
-            _logger.LogError("This is an error log entry");
-            _logger.LogCritical( "This is a critical log");
+            Logger.LogTrace("This is a log entry");
+            Logger.LogDebug("This is a debug log entry");
+            Logger.LogInformation("This is an information log entry");
+            Logger.LogWarning("This is a warning log entry");
+            Logger.LogError("This is an error log entry");
+            Logger.LogError("This is an error log entry");
+            Logger.LogCritical( "This is a critical log");
         }
 
     }
