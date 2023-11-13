@@ -39,6 +39,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseExceptionHandler(app.Environment.IsDevelopment() ? "/DevelopmentError" : "/ProductionError");
 
+app.UseStatusCodePagesWithReExecute("/StatusCodeHandler/{0}");
 
 app.UseAuthorization();
 

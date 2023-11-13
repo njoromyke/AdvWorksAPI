@@ -5,15 +5,42 @@ namespace AdvWorksAPI.Controllers
 {
     public class ErrorController : ControllerBase
     {
+        [Route("/StatusCodeHandler/{code:int}")]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public IActionResult StatusCodeHandler(int code)
+        {
+            IActionResult ret;
+            string msg = $"Code is not handled: '{code}'";
+
+            var feature = HttpContext.Features.Get<IStatusCodeReExecuteFeature>()!;
+
+            if (feature != null)
+            {
+                msg = feature.OriginalPathBase + feature.OriginalPath + feature.OriginalQueryString;
+            }
+
+            switch (code)
+            {
+                case 404:
+                    msg = $"API Route was not found: '{msg}'";
+                    ret = StatusCode(StatusCodes.Status404NotFound, msg);
+                    break;
+
+                default:
+                    ret = StatusCode(StatusCodes.Status500InternalServerError, msg);
+                    break;
+            }
+
+            return ret;
+        }
 
         [Route("/ProductionError")]
         [ApiExplorerSettings(IgnoreApi = true)]
-
         public IActionResult ProductionErrorHandler()
         {
             string msg = "Unknown Error";
 
-            var features = HttpContext.Features.Get<IExceptionHandlerFeature>() !;
+            var features = HttpContext.Features.Get<IExceptionHandlerFeature>()!;
 
             if (features != null)
             {
@@ -22,14 +49,14 @@ namespace AdvWorksAPI.Controllers
 
             return StatusCode(StatusCodes.Status500InternalServerError, msg);
         }
-          [Route("/DevelopmentError")]
-        [ApiExplorerSettings(IgnoreApi = true)]
 
+        [Route("/DevelopmentError")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public IActionResult DevelopmentErrorHandler()
         {
             string msg = "Unknown Error";
 
-            var features = HttpContext.Features.Get<IExceptionHandlerFeature>() !;
+            var features = HttpContext.Features.Get<IExceptionHandlerFeature>()!;
 
             if (features != null)
             {
@@ -40,6 +67,5 @@ namespace AdvWorksAPI.Controllers
 
             return StatusCode(StatusCodes.Status500InternalServerError, msg);
         }
-        
     }
 }
