@@ -25,11 +25,10 @@ public class ProductController : ControllerBaseApi
     {
         ActionResult<IEnumerable<Product>> ret;
         List<Product> list = _repo.Get();
-        string msg = "No Products are available";
+        InfoMessage  = "No Products are available";
 
         try
         {
-            throw new ApplicationException("ERROR!");
 
             return list?.Count > 0
                 ? StatusCode(StatusCodes.Status200OK, list)
@@ -37,19 +36,12 @@ public class ProductController : ControllerBaseApi
         }
         catch (Exception e)
         {
-            msg = "Error in ProductController.Get()";
-            msg += $"{Environment.NewLine} Message: {e.Message}";
-            msg += $"{Environment.NewLine} Source: {e.Source}";
-
-            Logger.LogError(e, "{msg}", msg);
-
-            ret = StatusCode(
-                StatusCodes.Status500InternalServerError,
-                new ApplicationException("Error in Product API. ")
-            );
+            InfoMessage = "Error in Product API";
+            ErrorLogMessage = " Error in ProductController.Get()";
+            ret = HandleException<IEnumerable<Product>>(e);
         }
 
-        return ret;
+        return ret; 
     }
 
     [HttpGet]
