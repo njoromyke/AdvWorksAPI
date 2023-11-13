@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AdvWorksAPI.BaseController
 {
@@ -11,11 +12,13 @@ namespace AdvWorksAPI.BaseController
             Logger = logger;
             InfoMessage = string.Empty;
             ErrorLogMessage = string.Empty;
+            EntityAsJson = "Nothing Serialized";
 
         }
 
         public string InfoMessage { get;set; }
         public string ErrorLogMessage { get;set; }
+        public string EntityAsJson { get;set; }
 
         protected ActionResult<T> HandleException<T>(Exception ex, string infoMessage, string errorMessage)
         {
@@ -36,6 +39,23 @@ namespace AdvWorksAPI.BaseController
             Logger.LogError(ex, "{ErrorLogMessage}",ErrorLogMessage);
 
             return ret;
+        }
+
+        protected string SerializeEntity<T>(T entity)
+        {
+            try
+            {
+
+                EntityAsJson = JsonSerializer.Serialize(entity);
+            }
+            catch (Exception e)
+            {
+                
+
+
+            }
+
+            return EntityAsJson;
         }
        
     }
