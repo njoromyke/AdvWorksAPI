@@ -3,6 +3,7 @@ using AdvWorksAPI.EntityLayer;
 using AdvWorksAPI.Interfaces;
 using AdvWorksAPI.RepositoryLayer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace AdvWorksAPI.Controllers;
 
@@ -11,10 +12,12 @@ namespace AdvWorksAPI.Controllers;
 public class ProductController : ControllerBaseApi
 {
     private readonly IRepository<Product> _repo;
+    private readonly AdvWorksApiDefaults _settings;
 
-    public ProductController(IRepository<Product> repo, ILogger<ProductController> logger) : base(logger)
+    public ProductController(IRepository<Product> repo, ILogger<ProductController> logger,IOptionsMonitor<AdvWorksApiDefaults> settings) : base(logger)
     {
         _repo = repo;
+        _settings = settings.CurrentValue;
     }
 
     [HttpGet]
@@ -36,7 +39,7 @@ public class ProductController : ControllerBaseApi
         }
         catch (Exception e)
         {
-            InfoMessage = "Error in Product API";
+            InfoMessage = _settings.InfoMessageDefault.Replace("{Verb}", "Get").Replace("{ClassName}", "Product");
             ErrorLogMessage = " Error in ProductController.Get()";
             ret = HandleException<IEnumerable<Product>>(e);
         }

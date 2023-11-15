@@ -15,6 +15,8 @@ AdvWorksApiDefaults settings = new();
 builder.Configuration.GetSection("AdvWorksAPI").Bind(settings);
 builder.Services.AddSingleton<AdvWorksApiDefaults>(settings);
 
+builder.Services.Configure<AdvWorksApiDefaults>(builder.Configuration.GetSection("AdvWorksAPI"));
+
 builder.Services.AddScoped<IRepository<Product>, ProductRepository>();
 
 
