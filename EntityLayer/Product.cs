@@ -16,7 +16,7 @@ namespace AdvWorksAPI.EntityLayer
 
         public int ProductID { get; set; }
         public string Name { get; set; }
-        [JsonPropertyOrder(-1)]
+       // [JsonPropertyOrder(-1)]
         public string ProductNumber { get; set; }
         public string? Color { get; set; }
         public decimal StandardCost { get; set; }
@@ -24,10 +24,10 @@ namespace AdvWorksAPI.EntityLayer
         public string? Size { get; set; }
         public decimal? Weight { get;set; }
 
-        [JsonPropertyName("categoryId")]
+//[JsonPropertyName("categoryId")]
         public int ProductCategoryID { get; set; }
 
-        [JsonPropertyName("modelId")]
+       // [JsonPropertyName("modelId")]
         public int ProductModelID {get; set; }
         public DateTime SellStartDate { get; set; }
         public DateTime? SellEndDate { get; set; }
