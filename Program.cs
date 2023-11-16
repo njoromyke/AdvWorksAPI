@@ -19,7 +19,6 @@ builder.Services.Configure<AdvWorksApiDefaults>(builder.Configuration.GetSection
 
 builder.Services.AddScoped<IRepository<Product>, ProductRepository>();
 
-
 //Configure Logging to Console
 
 builder.Host.UseSerilog(
@@ -41,8 +40,13 @@ builder.Host.UseSerilog(
     }
 );
 
-builder.Services.AddControllers().AddJsonOptions(options => 
-    options.JsonSerializerOptions.PropertyNamingPolicy= null);
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+        options.JsonSerializerOptions.IgnoreReadOnlyProperties = true;
+    });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
