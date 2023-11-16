@@ -77,4 +77,20 @@ public class ProductController : ControllerBaseApi
     {
         return StatusCode(StatusCodes.Status200OK);
     }
+
+
+    [HttpPost]
+    [Consumes("application/xml")]
+    [Produces("application/xml")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public ActionResult<Product> Post(Product entity)
+    {
+        ActionResult<Product> ret;
+
+        entity.ModifiedDate = DateTime.Now;
+
+        ret = StatusCode(StatusCodes.Status201Created, entity);
+
+        return ret;
+    }
 }
