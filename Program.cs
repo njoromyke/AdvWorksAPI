@@ -19,6 +19,18 @@ builder.Services.Configure<AdvWorksApiDefaults>(builder.Configuration.GetSection
 
 builder.Services.AddScoped<IRepository<Product>, ProductRepository>();
 
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AdvWorksAPICorsPolicy", builder =>
+        {
+           // builder.AllowAnyOrigin();
+            builder.WithOrigins("http://localhost:5126", "http://ww.example.com");
+            //builder.WithOrigins("http://localhost:5126", "http://ww.example.com").AllowAnyMethod();
+            //builder.WithOrigins("http://localhost:5126", "http://ww.example.com").WithMethods("GET", "POST", "PUT");
+
+        });
+    });
+
 //Configure Logging to Console
 
 builder.Host.UseSerilog(
@@ -58,12 +70,14 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(); 
 }
 
 app.UseExceptionHandler(app.Environment.IsDevelopment() ? "/DevelopmentError" : "/ProductionError");
 
 app.UseStatusCodePagesWithReExecute("/StatusCodeHandler/{0}");
+
+app.UseCors("AdvWorksAPICorsPolicy"); 
 
 app.UseAuthorization();
 
