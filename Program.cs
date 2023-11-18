@@ -1,3 +1,4 @@
+using AdvWorksAPI.ConstantClasses;
 using AdvWorksAPI.EntityLayer;
 using AdvWorksAPI.Interfaces;
 using AdvWorksAPI.RepositoryLayer;
@@ -21,7 +22,7 @@ builder.Services.AddScoped<IRepository<Product>, ProductRepository>();
 
     builder.Services.AddCors(options =>
     {
-        options.AddPolicy("AdvWorksAPICorsPolicy", builder =>
+        options.AddPolicy( AdvWorksAPIConstants.CorsPolicy, builder =>
         {
            // builder.AllowAnyOrigin();
             builder.WithOrigins("http://localhost:5126", "http://ww.example.com");
@@ -77,7 +78,7 @@ app.UseExceptionHandler(app.Environment.IsDevelopment() ? "/DevelopmentError" : 
 
 app.UseStatusCodePagesWithReExecute("/StatusCodeHandler/{0}");
 
-app.UseCors("AdvWorksAPICorsPolicy"); 
+app.UseCors(AdvWorksAPIConstants.CorsPolicy); 
 
 app.UseAuthorization();
 
