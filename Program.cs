@@ -1,5 +1,6 @@
 using AdvWorksAPI.ConstantClasses;
 using AdvWorksAPI.EntityLayer;
+using AdvWorksAPI.ExtensionClasses;
 using AdvWorksAPI.Interfaces;
 using AdvWorksAPI.RepositoryLayer;
 using Serilog;
@@ -20,46 +21,14 @@ builder.Services.Configure<AdvWorksApiDefaults>(builder.Configuration.GetSection
 
 builder.Services.AddScoped<IRepository<Product>, ProductRepository>();
 
-    builder.Services.AddCors(options =>
-    {
-        options.AddPolicy( AdvWorksAPIConstants.CorsPolicy, builder =>
-        {
-           // builder.AllowAnyOrigin();
-            builder.WithOrigins("http://localhost:5126", "http://ww.example.com");
-            //builder.WithOrigins("http://localhost:5126", "http://ww.example.com").AllowAnyMethod();
-            //builder.WithOrigins("http://localhost:5126", "http://ww.example.com").WithMethods("GET", "POST", "PUT");
-
-        });
-    });
+   builder.Services.ConfigureCors();
 
 //Configure Logging to Console
 
-builder.Host.UseSerilog(
-    (ctx, lc) =>
-    {
-        lc.WriteTo.Console();
+builder.Host.ConfigureSeriLog();
 
-        //Logging to Rolling File
-        lc.WriteTo.File(
-            "Logs/InfoLog-.txt",
-            rollingInterval: RollingInterval.Day,
-            restrictedToMinimumLevel: LogEventLevel.Information
-        );
-        lc.WriteTo.File(
-            "Logs/ErrorLog-.txt",
-            rollingInterval: RollingInterval.Day,
-            restrictedToMinimumLevel: LogEventLevel.Error
-        );
-    }
-);
-
-builder.Services
-    .AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.PropertyNamingPolicy = null;
-        options.JsonSerializerOptions.IgnoreReadOnlyProperties = true;
-    }).AddXmlSerializerFormatters();
+builder.Services.AddControllers().ConfigureJsonOptions();
+   
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
