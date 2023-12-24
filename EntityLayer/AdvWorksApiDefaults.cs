@@ -10,6 +10,7 @@ namespace AdvWorksAPI.EntityLayer
             ProductCategoryID = 1;
             InfoMessageDefault = string.Empty;
             ProductModelID = 2;
+            JWTSettings = new();
 
         }
 
@@ -17,5 +18,7 @@ namespace AdvWorksAPI.EntityLayer
         public string InfoMessageDefault { get; set; }
         public int ProductCategoryID { get; set; }
         public int ProductModelID {get; set; }
+
+        public JwtSettings JWTSettings { get; set; }
     }
 }

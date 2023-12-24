@@ -1,4 +1,5 @@
 using AdvWorksAPI.ConstantClasses;
+using AdvWorksAPI.EntityLayer;
 using AdvWorksAPI.ExtensionClasses;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,11 @@ builder.Services.ConfigureCors();
 //Configure Logging to Console
 
 builder.Host.ConfigureSeriLog();
+
+builder.Services.ConfigureJwtAuthentication(
+    builder.Configuration.GetRequiredSection("AdvWorksAPI").Get<AdvWorksApiDefaults>());
+
+builder.Services.ConfigureJwtAuthorization();
 
 builder.Services.AddControllers().ConfigureJsonOptions();
 
@@ -39,7 +45,9 @@ app.UseStatusCodePagesWithReExecute("/StatusCodeHandler/{0}");
 
 app.UseCors(AdvWorksAPIConstants.CorsPolicy);
 
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 
